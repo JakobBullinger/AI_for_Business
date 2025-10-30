@@ -1,0 +1,19 @@
+# Ignore virtual environment
+.venv/
+venv/
+env/
+
+# Ignore Streamlit secrets (contains API keys)
+.streamlit/secrets.toml
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore local Streamlit stuff
+.streamlit/*.yaml
+.streamlit/*.yml
+.streamlit/*.toml
+
+# macOS noise
+.DS_Store
