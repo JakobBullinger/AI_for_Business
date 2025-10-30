@@ -8,7 +8,7 @@ from datetime import datetime
 # Page config
 # ------------------------------------------------------------------
 st.set_page_config(
-    page_title="🧠 MindMate — Mood & Advice",
+    page_title="MindMate — Mood & Advice",
     page_icon="🧠",
     layout="centered",
 )
