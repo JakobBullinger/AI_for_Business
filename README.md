@@ -12,9 +12,8 @@ See `MindMate_User_Guide.pdf` (included in this repository).
 
 ---
 ```text
-## 🚀 Quick Start (run locally in under 5 minutes)
-
-### 1️⃣ Get the project
+🚀 Quick Start
+1️⃣ Get the project
 
 Clone or download this repository to your machine. You should have something like:
 
