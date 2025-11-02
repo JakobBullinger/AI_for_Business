@@ -152,11 +152,7 @@ Design choices:
 	•	The business / school use case:
 	•	Long-term vision: help HR / student services spot negative emotional trends early at the group or cohort level (aggregated and anonymized), instead of waiting until people are already in crisis.
 	•	It is not designed to read or monitor private individual messages.
-	•	For future production:
-	•	Add secure storage and access control.
-	•	Implement proper anonymization / aggregation before any manager ever sees trends.
-	•	Add escalation policies with human review and clear accountability.
-	•	Avoid individual surveillance — focus on early warning signals at the team / cohort level.
+
 
 ⸻
 
