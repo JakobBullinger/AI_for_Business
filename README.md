@@ -1,158 +1,169 @@
-# 🧠 MindMate — Mood & Advice
+# 💫 MindMate — Mood & Advice
 
-MindMate is an AI-powered emotional check-in assistant.
+MindMate is a lightweight demo web app that lets you check in with how you feel, get instant feedback on your mood, and receive a short supportive suggestion. It also lets you track how your mood evolves over time in the same session.
 
-You write a short note about how you feel right now.  
-The app:
-1. Analyzes your mood (positive / neutral / negative) using a sentiment model.
-2. Gives you a small practical suggestion for today.
-3. Generates a short supportive “AI coach reflection” using an OpenAI model.
-4. Lets you save check-ins and view your personal mood trend over time.
+This prototype was developed as part of a group project for the AI for Business course at ESSEC Business School.
 
-This project was developed as part of the course **AI for Business** at **ESSEC Business School**.
+🔗 **Live demo (no install):**  
+**https://your-mindmate.streamlit.app/**
 
-Live demo: https://your-mindmate.streamlit.app/
+📄 Full walkthrough / ethics / screenshots:  
+See `MindMate_User_Guide.pdf` (included in this repository).
 
 ---
 
-## 🔍 Why this exists
+## 🚀 Quick Start (run locally in under 5 minutes)
 
-Most wellbeing tracking tools are either:
-- long, effortful surveys, or
-- reactive (“we only intervene once someone is already burned out”).
+### 1️⃣ Get the project
 
-MindMate is designed to be:
-- a 20-second daily check-in,
-- a single realistic next step (not generic “do self-care”),
-- and a simple “am I getting better or worse this week?” view.
+Clone or download this repository to your machine. You should have something like:
 
-In a business / school context, the value is not to monitor individuals.  
-The value is to detect stress trends early at group level, so support teams can reach out before it becomes a crisis.
+```text
+mindmate/
+ ├─ mindmate_prototype.py
+ ├─ requirements.txt
+ ├─ .streamlit/
+ │    └─ secrets.toml
+ └─ README.md
 
----
+If the .streamlit folder doesn’t exist yet, you will create it in step 3.
 
-## 🧭 App Overview
+You can also try the hosted version directly in your browser (no setup required):
+https://your-mindmate.streamlit.app/
 
-The app runs as a Streamlit web app with a sidebar. You can switch between three pages:
+⸻
 
-### 1. 📝 Mood Check-in
-This is the main interaction.
+2️⃣ Make sure Python is installed
 
-- You type how you feel in your own words. Example:  
-  “I'm exhausted about exams and not sleeping well, but I’m still motivated to finish this week.”
-- Click **"✨ Analyze my mood"**.
+You need Python 3.11+ (the app was tested with Python 3.12).
 
-The app will show you:
-- **Sentiment label**  
-  POSITIVE / NEUTRAL / NEGATIVE
-- **Sentiment score**  
-  A numeric polarity score from roughly -1 (very negative) to +1 (very positive)
-- **A practical suggestion**  
-  One concrete thing you can actually try today (take a 5-minute reset, pick one realistic task, etc.)
-- **AI coach reflection**  
-  A short, supportive response generated using an OpenAI model. It reflects what you wrote, acknowledges it, and proposes one small next action.
+Check your version:
 
-Then you’ll see a button:
-**"📌 Save this check-in to my session"**
+python3 --version
 
-Clicking this stores the result (timestamp, your note, sentiment label, and score) to your local session so you can later visualize it.
+If you don’t have a suitable version, install one from:
+https://www.python.org/downloads/
 
-Important:
-- This does NOT create an account or write to a backend database in this prototype.  
-  It’s local to your current browser session.
+⸻
 
----
+3️⃣ Install dependencies
 
-### 2. 📈 My Trend
-This page is your personal mini-dashboard.
+From inside the project folder, create and activate a virtual environment:
 
-It shows:
-- A table of your saved check-ins:
-  - Time
-  - Sentiment label
-  - Sentiment score
-  - Your note
-- A line chart of your sentiment score over time.
+python3 -m venv .venv
+source .venv/bin/activate        # macOS / Linux
+# .venv\Scripts\Activate.ps1     # Windows PowerShell
 
-How to read it:
-- A higher score = more positive emotional tone.
-- A lower score = more stressed / negative / overwhelmed.
-- You can visually see stretches like “I sounded bad three days in a row” or “I bounced back after the exam.”
+Then install required packages:
 
-Again: this data lives only in your session state. When the session ends, it’s gone.
+pip install --upgrade pip
+pip install -r requirements.txt
 
----
+Optional (recommended for full functionality):
+Create a file .streamlit/secrets.toml in the project root with:
 
-### 3. ℹ About / Ethics / Use case
-This page explains:
-- **Why this matters in business / school settings**  
-  Aggregated mood trends (not personal text) could be used by HR or student services as an early warning indicator of burnout risk instead of waiting until people crash.
-- **Ethical boundaries**  
-  - We do NOT claim to provide mental health treatment.
-  - We do NOT diagnose.
-  - The AI coach is instructed that if someone expresses self-harm or wanting to hurt themselves, it should tell them to contact a trusted person or emergency services immediately. It does not attempt to “handle it alone.”
-  - In this prototype, we do not store user text on any server.
-- **Tech stack**  
-  - Streamlit for UI
-  - VADER sentiment model for mood scoring
-  - OpenAI model (`gpt-4o-mini` style) for the “AI coach reflection”
-  - pandas + Streamlit charting for your personal mood timeline
+OPENAI_API_KEY = "sk-your-real-openai-api-key"
 
-This page exists to show that the concept includes privacy and escalation thinking, not just “cool AI output.”
+This enables the “AI coach reflection”.
+If you skip this, the app will still run, but it will show a fallback message instead of AI-generated coaching.
 
----
+⚠️ Do not commit your real API key to GitHub.
 
-## 🧠 How it works (technical detail)
+⸻
 
-### Sentiment analysis
-We use `vaderSentiment` (lexicon & rule-based sentiment analysis).  
-It returns a `compound` score, roughly in [-1, 1].  
-We classify:
-- `compound ≥ 0.05` → POSITIVE  
-- `compound ≤ -0.05` → NEGATIVE  
-- otherwise → NEUTRAL
+4️⃣ Launch the app
 
-We surface both the label and the numeric score to the user.
+Still in the activated virtual environment, run:
 
-### AI coach reflection
-We call a small OpenAI chat model to generate a short response in natural language.  
-We send:
-- what the user wrote,
-- the predicted sentiment,
-- the sentiment score.
+streamlit run mindmate_prototype.py
 
-The prompt tells the model to:
-- acknowledge how the user feels,
-- suggest one concrete, realistic next step for *today*,
-- avoid clinical diagnosis language,
-- and, if self-harm is mentioned, tell the user to seek immediate human help (trusted person, emergency services).
+Streamlit will print a local URL, usually:
 
-If no OpenAI API key is configured, the app falls back to a safe message like:
-“AI coach is not active because no API key is configured.”
+http://localhost:8501
 
-### Trend tracking / analytics
-When you save a check-in:
-- we append an entry to `st.session_state.mood_history`, containing:
-  - timestamp
-  - your raw note
-  - sentiment label
-  - sentiment score
+Open that link in your browser.
 
-The “📈 My Trend” page then:
-- displays this history in a table, and
-- plots the sentiment score over time as a line chart.
+⸻
 
-Nothing is persisted to disk or uploaded to a remote database in this prototype.
+🧪 How to test it
+	1.	Go to the page “📝 Mood Check-in” in the sidebar.
+	2.	Type a short sentence describing your current mood, for example:
+“I’m stressed about exams and not sleeping well, but I’m still motivated to finish the week.”
+	3.	Click “✨ Analyze my mood”.
 
----
+The app will:
+	•	Estimate your overall sentiment (Positive / Neutral / Negative).
+	•	Show you a sentiment score (from roughly -1 = very negative to +1 = very positive).
+	•	Give you a small practical suggestion for today.
+	•	(If an API key is set) Generate a short “AI coach reflection” with supportive language and one concrete next step.
 
-## 🚀 How to run locally (for development)
+	4.	Click “📌 Save this check-in to my session”.
+	5.	Go to the page “📈 My Trend” in the sidebar.
 
-Even though the app is deployed at  
-https://your-mindmate.streamlit.app/  
-you can also run it locally if you want to develop or present offline.
+There you’ll see:
+	•	A table of all your saved check-ins (time, mood label, score, and what you wrote).
+	•	A line chart of your mood score over time.
 
-### 1. Get the code
-Clone or download the repository to a local folder, for example:
-```bash
-/Users/yourname/Documents/mindmate
+This is your personal mood timeline for this session.
+
+⸻
+
+🧠 What’s inside
+
+Sentiment analysis (vaderSentiment)
+
+We classify text into Positive / Neutral / Negative and compute a sentiment score.
+
+AI coach reflection (OpenAI API)
+	•	A lightweight model (e.g. gpt-4o-mini) generates a short supportive response and suggests one realistic next step.
+	•	If you mention self-harm, the assistant is instructed to tell you to reach out to someone you trust or contact local emergency services immediately. It does not try to “handle” crisis situations.
+
+Streamlit UI
+	•	Page 1: 📝 Mood Check-in
+	•	Page 2: 📈 My Trend
+	•	Page 3: ℹ About / Ethics / Use case
+
+Session-only mood history
+	•	Your saved moods are stored temporarily in st.session_state and visualized as a trend.
+	•	Nothing is written to a database in this prototype.
+
+⸻
+
+🏗 Architecture / Tech Stack
+	•	Frontend / App layer: Streamlit
+	•	Sentiment model: vaderSentiment (rule-based polarity scoring)
+	•	LLM assistant: OpenAI API (short-form reflective coach)
+	•	State / storage: Streamlit st.session_state only (in-memory, per session)
+	•	Charting: Streamlit’s built-in line chart for sentiment over time
+
+Design choices:
+	•	Minimal setup: runs in a single Python file.
+	•	Low barrier: plain-language check-in instead of a long questionnaire.
+	•	Responsible behavior: the AI coach is instructed to escalate to human help in crisis language instead of “trying to solve it.”
+
+⸻
+
+📝 Notes and Responsible Use
+	•	The app stores your mood notes only in memory during your current browser session.
+	•	When you refresh or close, the saved trend resets.
+	•	We do not persist your text to any backend database in this prototype.
+	•	The assistant is not a doctor or a therapist.
+	•	It does not diagnose burnout, depression, anxiety, etc.
+	•	It only reflects what you wrote and suggests one small next step.
+	•	The business / school use case:
+	•	Long-term vision: help HR / student services spot negative emotional trends early at the group or cohort level (aggregated and anonymized), instead of waiting until people are already in crisis.
+	•	It is not designed to read or monitor private individual messages.
+	•	For future production:
+	•	Add secure storage and access control.
+	•	Implement proper anonymization / aggregation before any manager ever sees trends.
+	•	Add escalation policies with human review and clear accountability.
+	•	Avoid individual surveillance — focus on early warning signals at the team / cohort level.
+
+⸻
+
+⚖ Disclaimer
+
+MindMate is a prototype built for educational purposes in the AI for Business course at ESSEC Business School.
+
+It is not medical software and is not intended for crisis intervention or clinical diagnosis.
+
