@@ -11,14 +11,14 @@ This prototype was developed as part of a group project for the AI for Business 
 See `MindMate_User_Guide.pdf` (included in this repository).
 
 ---
-
+```text
 ## 🚀 Quick Start (run locally in under 5 minutes)
 
 ### 1️⃣ Get the project
 
 Clone or download this repository to your machine. You should have something like:
 
-```text
+
 mindmate/
  ├─ mindmate_prototype.py
  ├─ requirements.txt
