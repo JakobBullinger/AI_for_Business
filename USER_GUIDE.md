@@ -1,21 +1,3 @@
-Great question. Nothing is “wrong” with your text — GitHub Markdown just didn’t know what you meant stylistically, so it flattened everything.
-
-There are three main reasons why it looks like that right now:
-	1.	You pasted plain text with emojis and fancy dividers instead of valid Markdown.
-	•	GitHub only understands Markdown syntax (#, ##, -, code fences, etc.).
-	•	Things like ⸻ or inline bullets like • won’t create real sections or lists unless you format them.
-	2.	You didn’t use code fences for commands / folder trees.
-	•	So GitHub smashed multi-line blocks (like your directory layout and shell commands) into one line.
-	3.	You didn’t use ## / ### headers, - bullet lists, or blank lines where Markdown expects them.
-	•	So it didn’t create list formatting and instead rendered paragraphs with inline dots.
-
-The fix is to convert your exact same content into proper GitHub Markdown. Below is a cleaned version using only Markdown features that render well on GitHub.
-
-You can copy-paste this directly into README.md or USER_GUIDE.md, and it will display exactly as you’d expect — headings, bullets, code blocks, etc.
-
-⸻
-
-
 # 💫 MindMate — Mood & Advice
 
 MindMate is a lightweight demo web app that lets you check in with how you feel, get instant feedback on your mood, and receive a short supportive suggestion. It also lets you track how your mood evolves over time in the same session.
@@ -33,7 +15,7 @@ This prototype was developed as part of a group project for the AI for Business 
 
 Clone or download this repository to your machine. You should have something like:
 
-```text
+
 mindmate/
  ├─ mindmate_prototype.py
  ├─ requirements.txt
